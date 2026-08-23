@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 
 @section('title', 'Yangi Rol Yaratish')
 @section('page-title', 'Yangi Rol Yaratish')

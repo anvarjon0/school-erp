@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'Yangi o\'quv yili')
 @section('content')
 <div class="card card-primary">

@@ -27,7 +27,12 @@ class AttendanceController extends Controller
                 ->get();
         }
 
-        return view('attendances.index', compact('sections', 'attendances', 'selectedSection', 'selectedDate'));
+        return \Inertia\Inertia::render('Attendances/Index', [
+            'sections' => $sections,
+            'attendances' => $attendances,
+            'selectedSection' => $selectedSection,
+            'selectedDate' => $selectedDate
+        ]);
     }
 
     public function create(Request $request)
@@ -58,7 +63,12 @@ class AttendanceController extends Controller
             }
         }
 
-        return view('attendances.create', compact('sections', 'students', 'selectedSection', 'date'));
+        return \Inertia\Inertia::render('Attendances/Create', [
+            'sections' => $sections,
+            'students' => $students,
+            'selectedSection' => $selectedSection,
+            'date' => $date
+        ]);
     }
 
     public function store(Request $request)
@@ -122,6 +132,11 @@ class AttendanceController extends Controller
             $report = $students;
         }
 
-        return view('attendances.report', compact('sections', 'report', 'month', 'year'));
+        return \Inertia\Inertia::render('Attendances/Report', [
+            'sections' => $sections,
+            'report' => $report,
+            'month' => $month,
+            'year' => $year
+        ]);
     }
 }

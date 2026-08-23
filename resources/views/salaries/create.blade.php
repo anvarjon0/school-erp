@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'Oylik to\'lash')
 @section('content')
 <div class="card card-primary">

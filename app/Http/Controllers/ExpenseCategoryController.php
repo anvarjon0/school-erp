@@ -9,12 +9,14 @@ class ExpenseCategoryController extends Controller
     public function index()
     {
         $categories = ExpenseCategory::withCount('expenses')->get();
-        return view('expense-categories.index', compact('categories'));
+        return \Inertia\Inertia::render('ExpenseCategories/Index', [
+            'categories' => $categories
+        ]);
     }
 
     public function create()
     {
-        return view('expense-categories.create');
+        return \Inertia\Inertia::render('ExpenseCategories/Create');
     }
 
     public function store(Request $request)
@@ -32,7 +34,9 @@ class ExpenseCategoryController extends Controller
 
     public function edit(ExpenseCategory $expenseCategory)
     {
-        return view('expense-categories.edit', compact('expenseCategory'));
+        return \Inertia\Inertia::render('ExpenseCategories/Edit', [
+            'expenseCategory' => $expenseCategory
+        ]);
     }
 
     public function update(Request $request, ExpenseCategory $expenseCategory)

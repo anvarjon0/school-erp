@@ -48,7 +48,10 @@ class StudentController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
 
-        return view('students.index', compact('students', 'grades'));
+        return \Inertia\Inertia::render('Students/Index', [
+            'students' => $students,
+            'grades' => $grades
+        ]);
     }
 
     public function create()
@@ -57,7 +60,11 @@ class StudentController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
         $academicYears = AcademicYear::latest()->get();
-        return view('students.create', compact('grades', 'academicYears', 'currentYear'));
+        return \Inertia\Inertia::render('Students/Create', [
+            'grades' => $grades,
+            'academicYears' => $academicYears,
+            'currentYear' => $currentYear
+        ]);
     }
 
     public function store(Request $request)
@@ -112,7 +119,9 @@ class StudentController extends Controller
         $student->load(['grade', 'section', 'academicYear', 'parentInfo', 'payments' => function ($q) {
             $q->latest()->take(10);
         }]);
-        return view('students.show', compact('student'));
+        return \Inertia\Inertia::render('Students/Show', [
+            'student' => $student
+        ]);
     }
 
     public function edit(Student $student)
@@ -123,7 +132,12 @@ class StudentController extends Controller
             ->orderBy('level')->get();
         $sections = Section::where('grade_id', $student->grade_id)->get();
         $academicYears = AcademicYear::latest()->get();
-        return view('students.edit', compact('student', 'grades', 'sections', 'academicYears'));
+        return \Inertia\Inertia::render('Students/Edit', [
+            'student' => $student,
+            'grades' => $grades,
+            'sections' => $sections,
+            'academicYears' => $academicYears
+        ]);
     }
 
     public function update(Request $request, Student $student)
@@ -188,7 +202,9 @@ class StudentController extends Controller
     public function payments(Student $student)
     {
         $student->load(['payments' => fn($q) => $q->latest(), 'grade']);
-        return view('students.payments', compact('student'));
+        return \Inertia\Inertia::render('Students/Payments', [
+            'student' => $student
+        ]);
     }
 
     public function getBySection(Section $section)

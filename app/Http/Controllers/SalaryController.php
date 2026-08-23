@@ -20,13 +20,21 @@ class SalaryController extends Controller
         $totalNet = Salary::where('month', $month)->where('year', $year)->sum('net_salary');
         $totalPaid = Salary::where('month', $month)->where('year', $year)->where('status', 'paid')->sum('net_salary');
 
-        return view('salaries.index', compact('salaries', 'month', 'year', 'totalNet', 'totalPaid'));
+        return \Inertia\Inertia::render('Salaries/Index', [
+            'salaries' => $salaries,
+            'month' => $month,
+            'year' => $year,
+            'totalNet' => $totalNet,
+            'totalPaid' => $totalPaid
+        ]);
     }
 
     public function create()
     {
         $users = User::where('is_active', true)->with('roles')->get();
-        return view('salaries.create', compact('users'));
+        return \Inertia\Inertia::render('Salaries/Create', [
+            'users' => $users
+        ]);
     }
 
     public function store(Request $request)
@@ -73,7 +81,9 @@ class SalaryController extends Controller
     public function edit(Salary $salary)
     {
         $salary->load('user');
-        return view('salaries.edit', compact('salary'));
+        return \Inertia\Inertia::render('Salaries/Edit', [
+            'salary' => $salary
+        ]);
     }
 
     public function update(Request $request, Salary $salary)

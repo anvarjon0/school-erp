@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'Kvitansiya')
 @section('page-title', 'Kvitansiya #' . $payment->receipt_number)
 @section('breadcrumb')

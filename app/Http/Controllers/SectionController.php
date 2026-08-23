@@ -18,7 +18,9 @@ class SectionController extends Controller
                 $q->whereHas('grade', fn($gq) => $gq->where('academic_year_id', $currentYear->id));
             })
             ->get();
-        return view('sections.index', compact('sections'));
+        return \Inertia\Inertia::render('Sections/Index', [
+            'sections' => $sections
+        ]);
     }
 
     public function create()
@@ -27,7 +29,10 @@ class SectionController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
         $teachers = User::whereHas('roles', fn($q) => $q->where('name', 'class-teacher'))->get();
-        return view('sections.create', compact('grades', 'teachers'));
+        return \Inertia\Inertia::render('Sections/Create', [
+            'grades' => $grades,
+            'teachers' => $teachers
+        ]);
     }
 
     public function store(Request $request)
@@ -51,7 +56,11 @@ class SectionController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
         $teachers = User::whereHas('roles', fn($q) => $q->where('name', 'class-teacher'))->get();
-        return view('sections.edit', compact('section', 'grades', 'teachers'));
+        return \Inertia\Inertia::render('Sections/Edit', [
+            'section' => $section,
+            'grades' => $grades,
+            'teachers' => $teachers
+        ]);
     }
 
     public function update(Request $request, Section $section)

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'O\'quvchi to\'lovlari')
 @section('page-title', $student->full_name . ' to\'lovlari')
 @section('breadcrumb')

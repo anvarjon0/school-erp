@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 
 @section('title', 'Rolni Tahrirlash')
 @section('page-title', 'Rolni Tahrirlash')

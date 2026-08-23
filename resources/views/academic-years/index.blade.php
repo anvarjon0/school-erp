@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'O\'quv yillari')
 @section('page-title', 'O\'quv yillari')
 @section('breadcrumb')

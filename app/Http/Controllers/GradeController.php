@@ -15,13 +15,17 @@ class GradeController extends Controller
             ->when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')
             ->get();
-        return view('grades.index', compact('grades'));
+        return \Inertia\Inertia::render('Grades/Index', [
+            'grades' => $grades
+        ]);
     }
 
     public function create()
     {
         $academicYears = AcademicYear::latest()->get();
-        return view('grades.create', compact('academicYears'));
+        return \Inertia\Inertia::render('Grades/Create', [
+            'academicYears' => $academicYears
+        ]);
     }
 
     public function store(Request $request)
@@ -42,7 +46,10 @@ class GradeController extends Controller
     public function edit(Grade $grade)
     {
         $academicYears = AcademicYear::latest()->get();
-        return view('grades.edit', compact('grade', 'academicYears'));
+        return \Inertia\Inertia::render('Grades/Edit', [
+            'grade' => $grade,
+            'academicYears' => $academicYears
+        ]);
     }
 
     public function update(Request $request, Grade $grade)

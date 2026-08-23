@@ -25,13 +25,19 @@ class ExpenseController extends Controller
         $categories = ExpenseCategory::all();
         $totalAmount = $query->sum('amount');
 
-        return view('expenses.index', compact('expenses', 'categories', 'totalAmount'));
+        return \Inertia\Inertia::render('Expenses/Index', [
+            'expenses' => $expenses,
+            'categories' => $categories,
+            'totalAmount' => $totalAmount
+        ]);
     }
 
     public function create()
     {
         $categories = ExpenseCategory::all();
-        return view('expenses.create', compact('categories'));
+        return \Inertia\Inertia::render('Expenses/Create', [
+            'categories' => $categories
+        ]);
     }
 
     public function store(Request $request)
@@ -60,7 +66,10 @@ class ExpenseController extends Controller
     public function edit(Expense $expense)
     {
         $categories = ExpenseCategory::all();
-        return view('expenses.edit', compact('expense', 'categories'));
+        return \Inertia\Inertia::render('Expenses/Edit', [
+            'expense' => $expense,
+            'categories' => $categories
+        ]);
     }
 
     public function update(Request $request, Expense $expense)

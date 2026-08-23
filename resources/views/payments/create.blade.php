@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'Yangi to\'lov')
 @section('page-title', 'Yangi to\'lov qabul qilish')
 @section('breadcrumb')

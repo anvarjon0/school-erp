@@ -9,12 +9,14 @@ class AcademicYearController extends Controller
     public function index()
     {
         $academicYears = AcademicYear::withCount('students')->latest()->get();
-        return view('academic-years.index', compact('academicYears'));
+        return \Inertia\Inertia::render('AcademicYears/Index', [
+            'academicYears' => $academicYears
+        ]);
     }
 
     public function create()
     {
-        return view('academic-years.create');
+        return \Inertia\Inertia::render('AcademicYears/Create');
     }
 
     public function store(Request $request)
@@ -33,7 +35,9 @@ class AcademicYearController extends Controller
 
     public function edit(AcademicYear $academicYear)
     {
-        return view('academic-years.edit', compact('academicYear'));
+        return \Inertia\Inertia::render('AcademicYears/Edit', [
+            'academicYear' => $academicYear
+        ]);
     }
 
     public function update(Request $request, AcademicYear $academicYear)

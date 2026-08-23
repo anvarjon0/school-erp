@@ -33,7 +33,9 @@ class PaymentController extends Controller
         }
 
         $payments = $query->latest()->paginate(15);
-        return view('payments.index', compact('payments'));
+        return \Inertia\Inertia::render('Payments/Index', [
+            'payments' => $payments
+        ]);
     }
 
     public function create()
@@ -41,7 +43,10 @@ class PaymentController extends Controller
         $currentYear = AcademicYear::current();
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
-        return view('payments.create', compact('grades', 'currentYear'));
+        return \Inertia\Inertia::render('Payments/Create', [
+            'grades' => $grades,
+            'currentYear' => $currentYear
+        ]);
     }
 
     public function store(Request $request)
@@ -87,7 +92,9 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         $payment->load(['student.grade', 'receiver']);
-        return view('payments.show', compact('payment'));
+        return \Inertia\Inertia::render('Payments/Show', [
+            'payment' => $payment
+        ]);
     }
 
     public function receipt(Payment $payment)
@@ -115,13 +122,19 @@ class PaymentController extends Controller
             ->whereNotIn('id', $paidStudentIds)
             ->paginate(15);
 
-        return view('payments.debtors', compact('debtors', 'month', 'year'));
+        return \Inertia\Inertia::render('Payments/Debtors', [
+            'debtors' => $debtors,
+            'month' => $month,
+            'year' => $year
+        ]);
     }
 
     public function edit(Payment $payment)
     {
         $payment->load('student');
-        return view('payments.edit', compact('payment'));
+        return \Inertia\Inertia::render('Payments/Edit', [
+            'payment' => $payment
+        ]);
     }
 
     public function update(Request $request, Payment $payment)

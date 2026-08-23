@@ -33,13 +33,19 @@ class UserController extends Controller
         $users = $query->latest()->paginate(15);
         $roles = Role::all();
 
-        return view('users.index', compact('users', 'roles'));
+        return \Inertia\Inertia::render('Users/Index', [
+            'users' => $users,
+            'roles' => $roles,
+            'filters' => request()->only(['search', 'role', 'status'])
+        ]);
     }
 
     public function create()
     {
         $roles = Role::all();
-        return view('users.create', compact('roles'));
+        return \Inertia\Inertia::render('Users/Create', [
+            'roles' => $roles
+        ]);
     }
 
     public function store(Request $request)
@@ -77,14 +83,17 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('roles');
-        return view('users.show', compact('user'));
+        return \Inertia\Inertia::render('Users/Show', ['user' => $user]);
     }
 
     public function edit(User $user)
     {
         $user->load('roles');
         $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        return \Inertia\Inertia::render('Users/Edit', [
+            'user' => $user,
+            'roles' => $roles
+        ]);
     }
 
     public function update(Request $request, User $user)

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 
 @section('title', 'Rollar va Ruxsatlar')
 @section('page-title', 'Rollar va Ruxsatlar Boshqaruvi')

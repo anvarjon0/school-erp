@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'Maoshni tahrirlash')
 @section('content')
 <div class="card card-warning">

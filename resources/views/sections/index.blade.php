@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte_app')
 @section('title', 'Bo\'limlar')
 @section('content')
 <div class="card">

@@ -38,7 +38,13 @@ class ReportController extends Controller
         $totalExpense = collect($monthlyData)->sum('expense');
         $totalSalary = collect($monthlyData)->sum('salary');
 
-        return view('reports.financial', compact('monthlyData', 'year', 'totalIncome', 'totalExpense', 'totalSalary'));
+        return \Inertia\Inertia::render('Reports/Financial', [
+            'monthlyData' => $monthlyData,
+            'year' => $year,
+            'totalIncome' => $totalIncome,
+            'totalExpense' => $totalExpense,
+            'totalSalary' => $totalSalary
+        ]);
     }
 
     public function monthlyIncome(Request $request)
@@ -54,6 +60,11 @@ class ReportController extends Controller
 
         $totalAmount = $payments->sum('paid_amount');
 
-        return view('reports.monthly-income', compact('payments', 'month', 'year', 'totalAmount'));
+        return \Inertia\Inertia::render('Reports/Monthly-income', [
+            'payments' => $payments,
+            'month' => $month,
+            'year' => $year,
+            'totalAmount' => $totalAmount
+        ]);
     }
 }

@@ -10,13 +10,17 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::withCount('users')->get();
-        return view('roles.index', compact('roles'));
+        return \Inertia\Inertia::render('Roles/Index', [
+            'roles' => $roles
+        ]);
     }
 
     public function create()
     {
         $permissions = Permission::all()->groupBy('group_name');
-        return view('roles.create', compact('permissions'));
+        return \Inertia\Inertia::render('Roles/Create', [
+            'permissions' => $permissions
+        ]);
     }
 
     public function store(Request $request)
@@ -46,7 +50,9 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         $role->load('permissions', 'users');
-        return view('roles.show', compact('role'));
+        return \Inertia\Inertia::render('Roles/Show', [
+            'role' => $role
+        ]);
     }
 
     public function edit(Role $role)
@@ -54,7 +60,11 @@ class RoleController extends Controller
         $role->load('permissions');
         $permissions = Permission::all()->groupBy('group_name');
         $rolePermissions = $role->permissions->pluck('id')->toArray();
-        return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        return \Inertia\Inertia::render('Roles/Edit', [
+            'role' => $role,
+            'permissions' => $permissions,
+            'rolePermissions' => $rolePermissions
+        ]);
     }
 
     public function update(Request $request, Role $role)
