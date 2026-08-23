@@ -48,7 +48,7 @@ jobs:
 
       - name: Install NPM dependencies & Build assets
         run: |
-          npm ci
+          npm install --legacy-peer-deps --no-audit --no-fund
           npm run build
 
   deploy:
