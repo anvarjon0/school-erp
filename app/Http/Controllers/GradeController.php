@@ -15,7 +15,7 @@ class GradeController extends Controller
             ->when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')
             ->get();
-        return \Inertia\Inertia::render('Grades/Index', [
+        return response()->json([
             'grades' => $grades
         ]);
     }
@@ -23,7 +23,7 @@ class GradeController extends Controller
     public function create()
     {
         $academicYears = AcademicYear::latest()->get();
-        return \Inertia\Inertia::render('Grades/Create', [
+        return response()->json([
             'academicYears' => $academicYears
         ]);
     }
@@ -39,14 +39,13 @@ class GradeController extends Controller
 
         Grade::create($validated);
 
-        return redirect()->route('grades.index')
-            ->with('success', 'Sinf muvaffaqiyatli yaratildi.');
+        return response()->json(['message' => 'Sinf muvaffaqiyatli yaratildi.']);
     }
 
     public function edit(Grade $grade)
     {
         $academicYears = AcademicYear::latest()->get();
-        return \Inertia\Inertia::render('Grades/Edit', [
+        return response()->json([
             'grade' => $grade,
             'academicYears' => $academicYears
         ]);
@@ -63,16 +62,15 @@ class GradeController extends Controller
 
         $grade->update($validated);
 
-        return redirect()->route('grades.index')
-            ->with('success', 'Sinf yangilandi.');
+        return response()->json(['message' => 'Sinf yangilandi.']);
     }
 
     public function destroy(Grade $grade)
     {
         if ($grade->students()->exists()) {
-            return back()->with('error', 'Bu sinfda o\'quvchilar bor.');
+            return response()->json(['message' => 'Bu sinfda o\'quvchilar bor.']);
         }
         $grade->delete();
-        return redirect()->route('grades.index')->with('success', 'Sinf o\'chirildi.');
+        return response()->json(['message' => 'Sinf o\'chirildi.']);
     }
 }

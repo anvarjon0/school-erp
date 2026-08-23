@@ -25,7 +25,7 @@ class ExpenseController extends Controller
         $categories = ExpenseCategory::all();
         $totalAmount = $query->sum('amount');
 
-        return \Inertia\Inertia::render('Expenses/Index', [
+        return response()->json([
             'expenses' => $expenses,
             'categories' => $categories,
             'totalAmount' => $totalAmount
@@ -35,7 +35,7 @@ class ExpenseController extends Controller
     public function create()
     {
         $categories = ExpenseCategory::all();
-        return \Inertia\Inertia::render('Expenses/Create', [
+        return response()->json([
             'categories' => $categories
         ]);
     }
@@ -59,14 +59,13 @@ class ExpenseController extends Controller
 
         Expense::create($validated);
 
-        return redirect()->route('expenses.index')
-            ->with('success', 'Xarajat qo\'shildi.');
+        return response()->json(['message' => 'Xarajat qo\'shildi.']);
     }
 
     public function edit(Expense $expense)
     {
         $categories = ExpenseCategory::all();
-        return \Inertia\Inertia::render('Expenses/Edit', [
+        return response()->json([
             'expense' => $expense,
             'categories' => $categories
         ]);
@@ -89,13 +88,12 @@ class ExpenseController extends Controller
 
         $expense->update($validated);
 
-        return redirect()->route('expenses.index')
-            ->with('success', 'Xarajat yangilandi.');
+        return response()->json(['message' => 'Xarajat yangilandi.']);
     }
 
     public function destroy(Expense $expense)
     {
         $expense->delete();
-        return redirect()->route('expenses.index')->with('success', 'Xarajat o\'chirildi.');
+        return response()->json(['message' => 'Xarajat o\'chirildi.']);
     }
 }

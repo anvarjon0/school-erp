@@ -20,7 +20,7 @@ class SalaryController extends Controller
         $totalNet = Salary::where('month', $month)->where('year', $year)->sum('net_salary');
         $totalPaid = Salary::where('month', $month)->where('year', $year)->where('status', 'paid')->sum('net_salary');
 
-        return \Inertia\Inertia::render('Salaries/Index', [
+        return response()->json([
             'salaries' => $salaries,
             'month' => $month,
             'year' => $year,
@@ -32,7 +32,7 @@ class SalaryController extends Controller
     public function create()
     {
         $users = User::where('is_active', true)->with('roles')->get();
-        return \Inertia\Inertia::render('Salaries/Create', [
+        return response()->json([
             'users' => $users
         ]);
     }
@@ -81,7 +81,7 @@ class SalaryController extends Controller
     public function edit(Salary $salary)
     {
         $salary->load('user');
-        return \Inertia\Inertia::render('Salaries/Edit', [
+        return response()->json([
             'salary' => $salary
         ]);
     }
@@ -115,15 +115,15 @@ class SalaryController extends Controller
             'paid_by' => auth()->id(),
         ]);
 
-        return back()->with('success', 'Maosh to\'landi deb belgilandi.');
+        return response()->json(['message' => 'Maosh to\'landi deb belgilandi.']);
     }
 
     public function destroy(Salary $salary)
     {
         if ($salary->status === 'paid') {
-            return back()->with('error', 'To\'langan maoshni o\'chirib bo\'lmaydi.');
+            return response()->json(['message' => 'To\'langan maoshni o\'chirib bo\'lmaydi.']);
         }
         $salary->delete();
-        return redirect()->route('salaries.index')->with('success', 'Maosh o\'chirildi.');
+        return response()->json(['message' => 'Maosh o\'chirildi.']);
     }
 }

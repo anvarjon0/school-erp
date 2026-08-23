@@ -10,7 +10,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::withCount('users')->get();
-        return \Inertia\Inertia::render('Roles/Index', [
+        return response()->json([
             'roles' => $roles
         ]);
     }
@@ -18,7 +18,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::all()->groupBy('group_name');
-        return \Inertia\Inertia::render('Roles/Create', [
+        return response()->json([
             'permissions' => $permissions
         ]);
     }
@@ -43,14 +43,13 @@ class RoleController extends Controller
             $role->permissions()->sync($validated['permissions']);
         }
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Rol muvaffaqiyatli yaratildi.');
+        return response()->json(['message' => 'Rol muvaffaqiyatli yaratildi.']);
     }
 
     public function show(Role $role)
     {
         $role->load('permissions', 'users');
-        return \Inertia\Inertia::render('Roles/Show', [
+        return response()->json([
             'role' => $role
         ]);
     }
@@ -60,7 +59,7 @@ class RoleController extends Controller
         $role->load('permissions');
         $permissions = Permission::all()->groupBy('group_name');
         $rolePermissions = $role->permissions->pluck('id')->toArray();
-        return \Inertia\Inertia::render('Roles/Edit', [
+        return response()->json([
             'role' => $role,
             'permissions' => $permissions,
             'rolePermissions' => $rolePermissions
@@ -83,21 +82,19 @@ class RoleController extends Controller
 
         $role->permissions()->sync($validated['permissions'] ?? []);
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Rol muvaffaqiyatli yangilandi.');
+        return response()->json(['message' => 'Rol muvaffaqiyatli yangilandi.']);
     }
 
     public function destroy(Role $role)
     {
         if (in_array($role->name, ['super-admin', 'administrator', 'accountant', 'class-teacher'])) {
-            return back()->with('error', 'Standart rollarni o\'chirib bo\'lmaydi.');
+            return response()->json(['message' => 'Standart rollarni o\'chirib bo\'lmaydi.']);
         }
 
         $role->permissions()->detach();
         $role->users()->detach();
         $role->delete();
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Rol o\'chirildi.');
+        return response()->json(['message' => 'Rol o\'chirildi.']);
     }
 }

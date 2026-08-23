@@ -18,7 +18,7 @@ class SectionController extends Controller
                 $q->whereHas('grade', fn($gq) => $gq->where('academic_year_id', $currentYear->id));
             })
             ->get();
-        return \Inertia\Inertia::render('Sections/Index', [
+        return response()->json([
             'sections' => $sections
         ]);
     }
@@ -29,7 +29,7 @@ class SectionController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
         $teachers = User::whereHas('roles', fn($q) => $q->where('name', 'class-teacher'))->get();
-        return \Inertia\Inertia::render('Sections/Create', [
+        return response()->json([
             'grades' => $grades,
             'teachers' => $teachers
         ]);
@@ -46,8 +46,7 @@ class SectionController extends Controller
 
         Section::create($validated);
 
-        return redirect()->route('sections.index')
-            ->with('success', 'Bo\'lim muvaffaqiyatli yaratildi.');
+        return response()->json(['message' => 'Bo\'lim muvaffaqiyatli yaratildi.']);
     }
 
     public function edit(Section $section)
@@ -56,7 +55,7 @@ class SectionController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
         $teachers = User::whereHas('roles', fn($q) => $q->where('name', 'class-teacher'))->get();
-        return \Inertia\Inertia::render('Sections/Edit', [
+        return response()->json([
             'section' => $section,
             'grades' => $grades,
             'teachers' => $teachers
@@ -74,17 +73,16 @@ class SectionController extends Controller
 
         $section->update($validated);
 
-        return redirect()->route('sections.index')
-            ->with('success', 'Bo\'lim yangilandi.');
+        return response()->json(['message' => 'Bo\'lim yangilandi.']);
     }
 
     public function destroy(Section $section)
     {
         if ($section->students()->exists()) {
-            return back()->with('error', 'Bu bo\'limda o\'quvchilar bor.');
+            return response()->json(['message' => 'Bu bo\'limda o\'quvchilar bor.']);
         }
         $section->delete();
-        return redirect()->route('sections.index')->with('success', 'Bo\'lim o\'chirildi.');
+        return response()->json(['message' => 'Bo\'lim o\'chirildi.']);
     }
 
     public function getByGrade(Grade $grade)

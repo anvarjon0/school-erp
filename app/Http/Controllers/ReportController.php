@@ -38,7 +38,7 @@ class ReportController extends Controller
         $totalExpense = collect($monthlyData)->sum('expense');
         $totalSalary = collect($monthlyData)->sum('salary');
 
-        return \Inertia\Inertia::render('Reports/Financial', [
+        return response()->json([
             'monthlyData' => $monthlyData,
             'year' => $year,
             'totalIncome' => $totalIncome,
@@ -60,7 +60,7 @@ class ReportController extends Controller
 
         $totalAmount = $payments->sum('paid_amount');
 
-        return \Inertia\Inertia::render('Reports/Monthly-income', [
+        return response()->json([
             'payments' => $payments,
             'month' => $month,
             'year' => $year,

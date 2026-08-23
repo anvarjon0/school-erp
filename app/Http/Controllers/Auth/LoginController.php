@@ -40,6 +40,6 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return \Inertia\Inertia::render('Auth/Login');
+        return response()->json(['message' => 'Success']);
     }
 }

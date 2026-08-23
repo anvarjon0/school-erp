@@ -9,14 +9,14 @@ class ExpenseCategoryController extends Controller
     public function index()
     {
         $categories = ExpenseCategory::withCount('expenses')->get();
-        return \Inertia\Inertia::render('ExpenseCategories/Index', [
+        return response()->json([
             'categories' => $categories
         ]);
     }
 
     public function create()
     {
-        return \Inertia\Inertia::render('ExpenseCategories/Create');
+        return response()->json(['message' => 'Success']);
     }
 
     public function store(Request $request)
@@ -28,13 +28,12 @@ class ExpenseCategoryController extends Controller
 
         ExpenseCategory::create($validated);
 
-        return redirect()->route('expense-categories.index')
-            ->with('success', 'Kategoriya yaratildi.');
+        return response()->json(['message' => 'Kategoriya yaratildi.']);
     }
 
     public function edit(ExpenseCategory $expenseCategory)
     {
-        return \Inertia\Inertia::render('ExpenseCategories/Edit', [
+        return response()->json([
             'expenseCategory' => $expenseCategory
         ]);
     }
@@ -48,16 +47,15 @@ class ExpenseCategoryController extends Controller
 
         $expenseCategory->update($validated);
 
-        return redirect()->route('expense-categories.index')
-            ->with('success', 'Kategoriya yangilandi.');
+        return response()->json(['message' => 'Kategoriya yangilandi.']);
     }
 
     public function destroy(ExpenseCategory $expenseCategory)
     {
         if ($expenseCategory->expenses()->exists()) {
-            return back()->with('error', 'Bu kategoriyaga xarajatlar biriktirilgan.');
+            return response()->json(['message' => 'Bu kategoriyaga xarajatlar biriktirilgan.']);
         }
         $expenseCategory->delete();
-        return redirect()->route('expense-categories.index')->with('success', 'Kategoriya o\'chirildi.');
+        return response()->json(['message' => 'Kategoriya o\'chirildi.']);
     }
 }

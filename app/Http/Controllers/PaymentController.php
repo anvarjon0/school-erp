@@ -33,7 +33,7 @@ class PaymentController extends Controller
         }
 
         $payments = $query->latest()->paginate(15);
-        return \Inertia\Inertia::render('Payments/Index', [
+        return response()->json([
             'payments' => $payments
         ]);
     }
@@ -43,7 +43,7 @@ class PaymentController extends Controller
         $currentYear = AcademicYear::current();
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
-        return \Inertia\Inertia::render('Payments/Create', [
+        return response()->json([
             'grades' => $grades,
             'currentYear' => $currentYear
         ]);
@@ -92,7 +92,7 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         $payment->load(['student.grade', 'receiver']);
-        return \Inertia\Inertia::render('Payments/Show', [
+        return response()->json([
             'payment' => $payment
         ]);
     }
@@ -122,7 +122,7 @@ class PaymentController extends Controller
             ->whereNotIn('id', $paidStudentIds)
             ->paginate(15);
 
-        return \Inertia\Inertia::render('Payments/Debtors', [
+        return response()->json([
             'debtors' => $debtors,
             'month' => $month,
             'year' => $year
@@ -132,7 +132,7 @@ class PaymentController extends Controller
     public function edit(Payment $payment)
     {
         $payment->load('student');
-        return \Inertia\Inertia::render('Payments/Edit', [
+        return response()->json([
             'payment' => $payment
         ]);
     }
@@ -157,15 +157,13 @@ class PaymentController extends Controller
             'status' => $status,
         ]);
 
-        return redirect()->route('payments.index')
-            ->with('success', 'To\'lov yangilandi.');
+        return response()->json(['message' => 'To\'lov yangilandi.']);
     }
 
     public function destroy(Payment $payment)
     {
         $payment->delete();
-        return redirect()->route('payments.index')
-            ->with('success', 'To\'lov o\'chirildi.');
+        return response()->json(['message' => 'To\'lov o\'chirildi.']);
     }
 
     public function getStudentFee(Student $student)

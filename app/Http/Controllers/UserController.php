@@ -43,7 +43,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return \Inertia\Inertia::render('Users/Create', [
+        return response()->json([
             'roles' => $roles
         ]);
     }
@@ -76,21 +76,20 @@ class UserController extends Controller
         $user = User::create($userData);
         $user->roles()->attach($validated['role_id']);
 
-        return redirect()->route('users.index')
-            ->with('success', 'Foydalanuvchi muvaffaqiyatli yaratildi.');
+        return response()->json(['message' => 'Foydalanuvchi muvaffaqiyatli yaratildi.']);
     }
 
     public function show(User $user)
     {
         $user->load('roles');
-        return \Inertia\Inertia::render('Users/Show', ['user' => $user]);
+        return response()->json(['user' => $user]);
     }
 
     public function edit(User $user)
     {
         $user->load('roles');
         $roles = Role::all();
-        return \Inertia\Inertia::render('Users/Edit', [
+        return response()->json([
             'user' => $user,
             'roles' => $roles
         ]);
@@ -126,32 +125,30 @@ class UserController extends Controller
         $user->update($userData);
         $user->roles()->sync([$validated['role_id']]);
 
-        return redirect()->route('users.index')
-            ->with('success', 'Foydalanuvchi muvaffaqiyatli yangilandi.');
+        return response()->json(['message' => 'Foydalanuvchi muvaffaqiyatli yangilandi.']);
     }
 
     public function destroy(User $user)
     {
         if ($user->isSuperAdmin()) {
-            return back()->with('error', 'Super Admin o\'chirib bo\'lmaydi.');
+            return response()->json(['message' => 'Super Admin o\'chirib bo\'lmaydi.']);
         }
 
         $user->roles()->detach();
         $user->delete();
 
-        return redirect()->route('users.index')
-            ->with('success', 'Foydalanuvchi o\'chirildi.');
+        return response()->json(['message' => 'Foydalanuvchi o\'chirildi.']);
     }
 
     public function toggleActive(User $user)
     {
         if ($user->isSuperAdmin()) {
-            return back()->with('error', 'Super Admin faolsizlantirib bo\'lmaydi.');
+            return response()->json(['message' => 'Super Admin faolsizlantirib bo\'lmaydi.']);
         }
 
         $user->update(['is_active' => !$user->is_active]);
         $status = $user->is_active ? 'faollashtirildi' : 'faolsizlantirildi';
 
-        return back()->with('success', "Foydalanuvchi {$status}.");
+        return response()->json(['message' => "Foydalanuvchi {$status}."]);
     }
 }

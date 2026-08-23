@@ -48,7 +48,7 @@ class StudentController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
 
-        return \Inertia\Inertia::render('Students/Index', [
+        return response()->json([
             'students' => $students,
             'grades' => $grades
         ]);
@@ -60,7 +60,7 @@ class StudentController extends Controller
         $grades = Grade::when($currentYear, fn($q) => $q->where('academic_year_id', $currentYear->id))
             ->orderBy('level')->get();
         $academicYears = AcademicYear::latest()->get();
-        return \Inertia\Inertia::render('Students/Create', [
+        return response()->json([
             'grades' => $grades,
             'academicYears' => $academicYears,
             'currentYear' => $currentYear
@@ -119,7 +119,7 @@ class StudentController extends Controller
         $student->load(['grade', 'section', 'academicYear', 'parentInfo', 'payments' => function ($q) {
             $q->latest()->take(10);
         }]);
-        return \Inertia\Inertia::render('Students/Show', [
+        return response()->json([
             'student' => $student
         ]);
     }
@@ -132,7 +132,7 @@ class StudentController extends Controller
             ->orderBy('level')->get();
         $sections = Section::where('grade_id', $student->grade_id)->get();
         $academicYears = AcademicYear::latest()->get();
-        return \Inertia\Inertia::render('Students/Edit', [
+        return response()->json([
             'student' => $student,
             'grades' => $grades,
             'sections' => $sections,
@@ -182,27 +182,25 @@ class StudentController extends Controller
             ]
         );
 
-        return redirect()->route('students.index')
-            ->with('success', 'O\'quvchi ma\'lumotlari yangilandi.');
+        return response()->json(['message' => 'O\'quvchi ma\'lumotlari yangilandi.']);
     }
 
     public function destroy(Student $student)
     {
         if ($student->payments()->exists()) {
-            return back()->with('error', 'Bu o\'quvchiga to\'lovlar biriktirilgan. Avval to\'lovlarni o\'chiring.');
+            return response()->json(['message' => 'Bu o\'quvchiga to\'lovlar biriktirilgan. Avval to\'lovlarni o\'chiring.']);
         }
 
         $student->parentInfo()?->delete();
         $student->delete();
 
-        return redirect()->route('students.index')
-            ->with('success', 'O\'quvchi o\'chirildi.');
+        return response()->json(['message' => 'O\'quvchi o\'chirildi.']);
     }
 
     public function payments(Student $student)
     {
         $student->load(['payments' => fn($q) => $q->latest(), 'grade']);
-        return \Inertia\Inertia::render('Students/Payments', [
+        return response()->json([
             'student' => $student
         ]);
     }

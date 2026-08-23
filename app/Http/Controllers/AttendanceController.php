@@ -27,7 +27,7 @@ class AttendanceController extends Controller
                 ->get();
         }
 
-        return \Inertia\Inertia::render('Attendances/Index', [
+        return response()->json([
             'sections' => $sections,
             'attendances' => $attendances,
             'selectedSection' => $selectedSection,
@@ -63,7 +63,7 @@ class AttendanceController extends Controller
             }
         }
 
-        return \Inertia\Inertia::render('Attendances/Create', [
+        return response()->json([
             'sections' => $sections,
             'students' => $students,
             'selectedSection' => $selectedSection,
@@ -132,7 +132,7 @@ class AttendanceController extends Controller
             $report = $students;
         }
 
-        return \Inertia\Inertia::render('Attendances/Report', [
+        return response()->json([
             'sections' => $sections,
             'report' => $report,
             'month' => $month,

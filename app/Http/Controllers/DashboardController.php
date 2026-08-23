@@ -94,7 +94,7 @@ class DashboardController extends Controller
                 ->count();
         }
 
-        return \Inertia\Inertia::render('Dashboard/Index', $data);
+        return response()->json($data);
     }
 
     private function getDebtorCount(?AcademicYear $currentYear): int

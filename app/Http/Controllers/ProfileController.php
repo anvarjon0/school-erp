@@ -9,7 +9,7 @@ class ProfileController extends Controller
 {
     public function edit()
     {
-        return \Inertia\Inertia::render('Profile/Edit', ['user' => auth()->user()]);
+        return response()->json(['user' => auth()->user()]);
     }
 
     public function update(Request $request)
@@ -29,7 +29,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return back()->with('success', 'Profil yangilandi.');
+        return response()->json(['message' => 'Profil yangilandi.']);
     }
 
     public function updatePassword(Request $request)
@@ -42,11 +42,11 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Joriy parol noto\'g\'ri.']);
+            return response()->json(['errors' => ['current_password' => 'Joriy parol noto\'g\'ri.']], 422);
         }
 
         $user->update(['password' => Hash::make($request->password)]);
 
-        return back()->with('success', 'Parol yangilandi.');
+        return response()->json(['message' => 'Parol yangilandi.']);
     }
 }

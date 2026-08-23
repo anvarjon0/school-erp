@@ -9,14 +9,14 @@ class AcademicYearController extends Controller
     public function index()
     {
         $academicYears = AcademicYear::withCount('students')->latest()->get();
-        return \Inertia\Inertia::render('AcademicYears/Index', [
+        return response()->json([
             'academicYears' => $academicYears
         ]);
     }
 
     public function create()
     {
-        return \Inertia\Inertia::render('AcademicYears/Create');
+        return response()->json(['message' => 'Success']);
     }
 
     public function store(Request $request)
@@ -29,13 +29,12 @@ class AcademicYearController extends Controller
 
         AcademicYear::create($validated);
 
-        return redirect()->route('academic-years.index')
-            ->with('success', 'O\'quv yili muvaffaqiyatli yaratildi.');
+        return response()->json(['message' => 'O\'quv yili muvaffaqiyatli yaratildi.']);
     }
 
     public function edit(AcademicYear $academicYear)
     {
-        return \Inertia\Inertia::render('AcademicYears/Edit', [
+        return response()->json([
             'academicYear' => $academicYear
         ]);
     }
@@ -50,8 +49,7 @@ class AcademicYearController extends Controller
 
         $academicYear->update($validated);
 
-        return redirect()->route('academic-years.index')
-            ->with('success', 'O\'quv yili yangilandi.');
+        return response()->json(['message' => 'O\'quv yili yangilandi.']);
     }
 
     public function setCurrent(AcademicYear $academicYear)
@@ -59,15 +57,15 @@ class AcademicYearController extends Controller
         AcademicYear::where('is_current', true)->update(['is_current' => false]);
         $academicYear->update(['is_current' => true]);
 
-        return back()->with('success', 'Joriy o\'quv yili o\'zgartirildi.');
+        return response()->json(['message' => 'Joriy o\'quv yili o\'zgartirildi.']);
     }
 
     public function destroy(AcademicYear $academicYear)
     {
         if ($academicYear->students()->exists()) {
-            return back()->with('error', 'Bu o\'quv yiliga o\'quvchilar biriktirilgan.');
+            return response()->json(['message' => 'Bu o\'quv yiliga o\'quvchilar biriktirilgan.']);
         }
         $academicYear->delete();
-        return redirect()->route('academic-years.index')->with('success', 'O\'quv yili o\'chirildi.');
+        return response()->json(['message' => 'O\'quv yili o\'chirildi.']);
     }
 }
