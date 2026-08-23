@@ -17,6 +17,25 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 
+// Public Health check for CI/CD and monitoring
+Route::get('/health', function () {
+    try {
+        \Illuminate\Support\Facades\DB::connection()->getPdo();
+        $dbStatus = 'connected';
+    } catch (\Throwable $e) {
+        $dbStatus = 'disconnected';
+    }
+
+    $isOk = $dbStatus === 'connected';
+
+    return response()->json([
+        'status' => $isOk ? 'ok' : 'error',
+        'database' => $dbStatus,
+        'app_env' => config('app.env'),
+        'timestamp' => now()->toIso8601String(),
+    ], $isOk ? 200 : 503);
+});
+
 // Auth routes
 Auth::routes(['register' => false]);
 
