@@ -54,7 +54,7 @@ composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 # 5. Frontend assets build qilish
 echo "🎨 4/8: NPM build tayyorlanmoqda..."
-npm ci --silent
+npm install --no-audit --no-fund --silent
 npm run build
 
 # 6. Storage link va Bazaviy migratsiyalar
