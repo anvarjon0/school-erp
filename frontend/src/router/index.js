@@ -25,6 +25,11 @@ const routes = [
         path: 'students',
         name: 'Students',
         component: () => import('@/pages/students/Index.vue')
+      },
+      {
+        path: 'students/create',
+        name: 'StudentCreate',
+        component: () => import('@/pages/students/Create.vue')
       }
       // Future routes here
     ]

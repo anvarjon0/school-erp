@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('students', StudentController::class);
     Route::get('students/{student}/payments', [StudentController::class, 'payments']);
     Route::get('sections/{section}/students', [StudentController::class, 'getBySection']);
+    Route::get('grades/{grade}/sections', [SectionController::class, 'getByGrade']);
 
     // Attendance
     Route::apiResource('attendances', AttendanceController::class)->except(['show', 'destroy']);
