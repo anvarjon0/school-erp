@@ -13,18 +13,24 @@ import {
   Phone,
   Wallet
 } from 'lucide-vue-next'
+import SlideOver from '@/components/SlideOver.vue'
+import StudentForm from '@/components/StudentForm.vue'
+import { useToast } from '@/composables/useToast'
 
 const router = useRouter()
 const route = useRoute()
+const toast = useToast()
+
 const student = ref(null)
 const loading = ref(true)
+const isEditFormOpen = ref(false)
 
 const fetchStudent = async () => {
   try {
     const response = await axios.get(`/students/${route.params.id}`)
     student.value = response.data.student
   } catch (error) {
-    console.error('Failed to fetch student details', error)
+    toast.error('O\'quvchi ma\'lumotlarini yuklab bo\'lmadi')
   } finally {
     loading.value = false
   }
@@ -35,10 +41,16 @@ const deleteStudent = async () => {
   
   try {
     await axios.delete(`/students/${student.value.id}`)
+    toast.success('O\'quvchi o\'chirildi')
     router.push('/students')
   } catch (error) {
-    alert(error.response?.data?.message || 'Xatolik yuz berdi')
+    toast.error(error.response?.data?.message || 'Xatolik yuz berdi')
   }
+}
+
+const onFormSaved = () => {
+  isEditFormOpen.value = false
+  fetchStudent() // refresh data
 }
 
 onMounted(() => {
@@ -84,13 +96,13 @@ const formatMoney = (amount) => {
         </div>
       </div>
       <div class="flex space-x-3" v-if="!loading">
-        <router-link 
-          :to="`/students/${student.id}/edit`"
+        <button 
+          @click="isEditFormOpen = true"
           class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
         >
           <Edit class="w-4 h-4 mr-2" />
           Tahrirlash
-        </router-link>
+        </button>
         <button 
           @click="deleteStudent"
           class="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
@@ -227,5 +239,20 @@ const formatMoney = (amount) => {
 
       </div>
     </template>
+
+    <!-- Slide-over for Edit -->
+    <SlideOver 
+      v-model="isEditFormOpen" 
+      title="O'quvchini tahrirlash"
+      width="max-w-md sm:max-w-lg"
+    >
+      <StudentForm 
+        v-if="isEditFormOpen"
+        :student-id="student.id"
+        @saved="onFormSaved"
+        @cancel="isEditFormOpen = false"
+      />
+    </SlideOver>
+
   </div>
 </template>

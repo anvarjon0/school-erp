@@ -27,19 +27,9 @@ const routes = [
         component: () => import('@/pages/students/Index.vue')
       },
       {
-        path: 'students/create',
-        name: 'StudentCreate',
-        component: () => import('@/pages/students/Create.vue')
-      },
-      {
         path: 'students/:id',
         name: 'StudentShow',
         component: () => import('@/pages/students/Show.vue')
-      },
-      {
-        path: 'students/:id/edit',
-        name: 'StudentEdit',
-        component: () => import('@/pages/students/Edit.vue')
       }
       // Future routes here
     ]
