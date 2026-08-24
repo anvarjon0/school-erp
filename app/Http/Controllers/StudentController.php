@@ -110,8 +110,10 @@ class StudentController extends Controller
             'address' => $validated['parent_address'] ?? null,
         ]);
 
-        return redirect()->route('students.index')
-            ->with('success', 'O\'quvchi muvaffaqiyatli qo\'shildi. ID: ' . $studentData['student_id']);
+        return response()->json([
+            'message' => 'O\'quvchi muvaffaqiyatli qo\'shildi. ID: ' . $studentData['student_id'],
+            'student' => $student
+        ], 201);
     }
 
     public function show(Student $student)
