@@ -207,12 +207,12 @@ const getStatusText = (status) => {
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div class="flex items-center justify-end space-x-2">
-                  <button class="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors">
+                  <router-link :to="`/students/${student.id}`" class="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors">
                     <Eye class="w-4 h-4" />
-                  </button>
-                  <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                  </router-link>
+                  <router-link :to="`/students/${student.id}/edit`" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
                     <Edit class="w-4 h-4" />
-                  </button>
+                  </router-link>
                 </div>
               </td>
             </tr>
