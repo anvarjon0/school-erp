@@ -195,6 +195,25 @@ const formatMoney = (amount) => {
                 <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ student.parent_info.mother_name }}</p>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 flex items-center"><Phone class="w-3 h-3 mr-1"/> {{ student.parent_info.mother_phone || 'Yo\'q' }}</p>
               </div>
+              
+              <!-- Passport & PINFL -->
+              <div class="pt-3 border-t border-gray-100 dark:border-gray-700">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400">JSHSHIR (PINFL)</p>
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ student.parent_info.pinfl || 'Kiritilmagan' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Pasport</p>
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                      <span v-if="student.parent_info.passport_series || student.parent_info.passport_number">
+                        {{ student.parent_info.passport_series }} {{ student.parent_info.passport_number }}
+                      </span>
+                      <span v-else>Kiritilmagan</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div v-else class="text-sm text-gray-500">
               Ma'lumotlar kiritilmagan

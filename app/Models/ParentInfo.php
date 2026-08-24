@@ -12,8 +12,15 @@ class ParentInfo extends Model
     protected $table = 'parents';
 
     protected $fillable = [
-        'father_name', 'father_phone', 'mother_name', 'mother_phone',
-        'address', 'student_id',
+        'student_id',
+        'father_name',
+        'father_phone',
+        'mother_name',
+        'mother_phone',
+        'address',
+        'pinfl',
+        'passport_series',
+        'passport_number'
     ];
 
     public function student()

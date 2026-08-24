@@ -36,7 +36,10 @@ const form = ref({
   father_phone: '',
   mother_name: '',
   mother_phone: '',
-  parent_address: ''
+  parent_address: '',
+  pinfl: '',
+  passport_series: '',
+  passport_number: ''
 })
 
 const photoFile = ref(null)
@@ -73,7 +76,10 @@ const fetchData = async () => {
         father_phone: student.parent_info?.father_phone || '',
         mother_name: student.parent_info?.mother_name || '',
         mother_phone: student.parent_info?.mother_phone || '',
-        parent_address: student.parent_info?.address || ''
+        parent_address: student.parent_info?.address || '',
+        pinfl: student.parent_info?.pinfl || '',
+        passport_series: student.parent_info?.passport_series || '',
+        passport_number: student.parent_info?.passport_number || ''
       }
       if (student.photo) currentPhotoUrl.value = `/storage/${student.photo}`
     } else {
@@ -210,15 +216,45 @@ watch(() => props.studentId, () => {
 
     <!-- Parent Info (Compact) -->
     <div class="border-t border-gray-100 dark:border-gray-700 pt-4">
-      <h4 class="text-sm font-semibold mb-3">Ota-ona</h4>
-      <div class="grid grid-cols-2 gap-4">
+      <h4 class="text-sm font-semibold mb-3">Ota-ona yoki Vasiy</h4>
+      
+      <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <label class="block text-xs font-medium mb-1">Otasining ismi</label>
+          <label class="block text-xs font-medium mb-1">Otasining / Vasiy F.I.SH</label>
           <input v-model="form.father_name" type="text" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 sm:text-sm">
         </div>
         <div>
           <label class="block text-xs font-medium mb-1">Telefon</label>
           <input v-model="form.father_phone" type="text" placeholder="+998..." class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 sm:text-sm">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-xs font-medium mb-1">Onasining F.I.SH</label>
+          <input v-model="form.mother_name" type="text" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 sm:text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1">Telefon (Ona)</label>
+          <input v-model="form.mother_phone" type="text" placeholder="+998..." class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 sm:text-sm">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-medium mb-1">JSHSHIR (PINFL)</label>
+          <input v-model="form.pinfl" type="text" maxlength="14" placeholder="14 xonali raqam" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 sm:text-sm">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
+        <div class="sm:col-span-1">
+          <label class="block text-xs font-medium mb-1">Pasport Seriyasi</label>
+          <input v-model="form.passport_series" type="text" maxlength="2" placeholder="AA" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 sm:text-sm uppercase">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-medium mb-1">Pasport Raqami</label>
+          <input v-model="form.passport_number" type="text" maxlength="7" placeholder="1234567" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 sm:text-sm">
         </div>
       </div>
     </div>

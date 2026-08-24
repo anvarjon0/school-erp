@@ -86,10 +86,13 @@ class StudentController extends Controller
             'mother_name' => 'nullable|string|max:255',
             'mother_phone' => 'nullable|string|max:20',
             'parent_address' => 'nullable|string',
+            'pinfl' => 'nullable|string|size:14',
+            'passport_series' => 'nullable|string|size:2',
+            'passport_number' => 'nullable|string|size:7',
         ]);
 
         $studentData = collect($validated)->except([
-            'father_name', 'father_phone', 'mother_name', 'mother_phone', 'parent_address', 'photo'
+            'father_name', 'father_phone', 'mother_name', 'mother_phone', 'parent_address', 'photo', 'pinfl', 'passport_series', 'passport_number'
         ])->toArray();
 
         $studentData['student_id'] = Student::generateStudentId();
@@ -108,6 +111,9 @@ class StudentController extends Controller
             'mother_name' => $validated['mother_name'] ?? null,
             'mother_phone' => $validated['mother_phone'] ?? null,
             'address' => $validated['parent_address'] ?? null,
+            'pinfl' => $validated['pinfl'] ?? null,
+            'passport_series' => $validated['passport_series'] ?? null,
+            'passport_number' => $validated['passport_number'] ?? null,
         ]);
 
         return response()->json([
@@ -161,10 +167,13 @@ class StudentController extends Controller
             'mother_name' => 'nullable|string|max:255',
             'mother_phone' => 'nullable|string|max:20',
             'parent_address' => 'nullable|string',
+            'pinfl' => 'nullable|string|size:14',
+            'passport_series' => 'nullable|string|size:2',
+            'passport_number' => 'nullable|string|size:7',
         ]);
 
         $studentData = collect($validated)->except([
-            'father_name', 'father_phone', 'mother_name', 'mother_phone', 'parent_address', 'photo'
+            'father_name', 'father_phone', 'mother_name', 'mother_phone', 'parent_address', 'photo', 'pinfl', 'passport_series', 'passport_number'
         ])->toArray();
 
         if ($request->hasFile('photo')) {
@@ -181,6 +190,9 @@ class StudentController extends Controller
                 'mother_name' => $validated['mother_name'] ?? null,
                 'mother_phone' => $validated['mother_phone'] ?? null,
                 'address' => $validated['parent_address'] ?? null,
+                'pinfl' => $validated['pinfl'] ?? null,
+                'passport_series' => $validated['passport_series'] ?? null,
+                'passport_number' => $validated['passport_number'] ?? null,
             ]
         );
 
